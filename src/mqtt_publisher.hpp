@@ -7,7 +7,7 @@
 
 class MqttPublisher {
 public:
-    MqttPublisher(const std::string& server, std::string vin);
+    MqttPublisher(const std::string& server, std::string vin, std::string certs_dir);
     void connect();
     void publish(const VehicleSnapshot& snapshot);
 
@@ -16,5 +16,6 @@ private:
 
     std::string vin_;
     std::string base_;
+    std::string certs_dir_;
     mqtt::client client_;
 };

@@ -8,7 +8,8 @@
 #include "simulated_can_bus.hpp"
 int main() {
    std::unique_ptr<ISignalSource> source = std::make_unique<CanSignalSource>(std::make_unique<SimulatedCanBus>());
-    MqttPublisher publisher("tcp://localhost:1883", "WBA00000000000001");
+MqttPublisher publisher("ssl://localhost:8883", "WBA00000000000001",
+                         "/home/r1ver223/projects/vehicle-gateway/certs");
 
     try {
         publisher.connect();

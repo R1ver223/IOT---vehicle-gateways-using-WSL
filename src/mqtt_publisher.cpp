@@ -42,6 +42,13 @@ void MqttPublisher::connect() {
     std::cout << "Subscribed to " << base_ << "/command/+\n";
 }
 
+void MqttPublisher::disconnect() {
+    client_.publish(mqtt::make_message(base_ + "/status", "offline", 1, true))->wait();
+    client_.disconnect()->wait();
+}
+
+
+
 void MqttPublisher::publish(const VehicleSnapshot& s) {
     publish_value("speed_kmh", s.speed_kmh);
     publish_value("battery_temp_c", s.battery_temp_c);
@@ -73,3 +80,4 @@ void MqttPublisher::message_arrived(mqtt::const_message_ptr msg) {
 void MqttPublisher::connection_lost(const std::string& cause) {
     std::cerr << "Connection lost: " << cause << "\n";
 }
+

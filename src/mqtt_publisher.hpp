@@ -14,6 +14,7 @@ public:
     MqttPublisher(const std::string& server, std::string vin, std::string certs_dir);
 
     void connect();
+    void disconnect(); 
     void publish(const VehicleSnapshot& snapshot);
     void set_command_handler(CommandHandler handler);
 

@@ -1,4 +1,5 @@
 #include <chrono>
+#include <filesystem>
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -6,10 +7,13 @@
 #include "can_signal_source.hpp"
 #include "mqtt_publisher.hpp"
 #include "simulated_can_bus.hpp"
+
 int main() {
-   std::unique_ptr<ISignalSource> source = std::make_unique<CanSignalSource>(std::make_unique<SimulatedCanBus>());
-MqttPublisher publisher("ssl://localhost:8883", "WBA00000000000001",
-                         "/home/r1ver223/projects/vehicle-gateway/certs");
+    std::unique_ptr<ISignalSource> source =
+        std::make_unique<CanSignalSource>(std::make_unique<SimulatedCanBus>());
+
+    std::string certs_dir = (std::filesystem::current_path() / "certs").string();
+    MqttPublisher publisher("ssl://localhost:8883", "WBA00000000000001", certs_dir);
 
     try {
         publisher.connect();

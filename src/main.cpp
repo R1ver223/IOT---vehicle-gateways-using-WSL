@@ -7,6 +7,7 @@
 #include "can_signal_source.hpp"
 #include "mqtt_publisher.hpp"
 #include "simulated_can_bus.hpp"
+#include "vehicle_state.hpp"
 
 int main() {
     std::unique_ptr<ISignalSource> source =
@@ -14,6 +15,11 @@ int main() {
 
     std::string certs_dir = (std::filesystem::current_path() / "certs").string();
     MqttPublisher publisher("ssl://localhost:8883", "WBA00000000000001", certs_dir);
+
+    VehicleState state;
+    publisher.set_command_handler([&state](const std::string& cmd, const std::string& payload) {
+        return state.handle_command(cmd, payload);
+    });
 
     try {
         publisher.connect();

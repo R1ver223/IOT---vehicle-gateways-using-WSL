@@ -3,11 +3,11 @@
 #include <memory>
 #include <thread>
 
+#include "can_signal_source.hpp"
 #include "mqtt_publisher.hpp"
-#include "simulated_source.hpp"
-
+#include "simulated_can_bus.hpp"
 int main() {
-    std::unique_ptr<ISignalSource> source = std::make_unique<SimulatedSource>();
+   std::unique_ptr<ISignalSource> source = std::make_unique<CanSignalSource>(std::make_unique<SimulatedCanBus>());
     MqttPublisher publisher("tcp://localhost:1883", "WBA00000000000001");
 
     try {
